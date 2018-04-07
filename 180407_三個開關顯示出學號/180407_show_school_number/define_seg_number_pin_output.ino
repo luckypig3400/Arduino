@@ -1,5 +1,5 @@
 //you must define a com pin first!!
-int a=2,b=3,c=4,d=5,e=6,f=7,g=8;
+int a=32,b=30,c=4,d=6,e=7,f=34,g=36;
 void segClearAll(){
   digitalWrite(a,HIGH);
   digitalWrite(b,HIGH);
