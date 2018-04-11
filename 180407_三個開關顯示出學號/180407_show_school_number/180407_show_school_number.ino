@@ -47,12 +47,12 @@ void loop() {
   }
   if(s1state==HIGH && s2state==HIGH && s3state==HIGH){
     // s1 s2 s3 = 111
-    segShow0();delay(300);segClearAll();
-    segShow5();delay(300);segClearAll();
-    segShow0();delay(300);segClearAll();
-    segShow3();delay(300);segClearAll();
-    segShow2();delay(300);segClearAll();
-    segShow3();delay(300);segClearAll();
-    segShow2();delay(300);segClearAll();
+    segShow0();delay(500);segClearAll();
+    segShow5();delay(500);segClearAll();
+    segShow0();delay(500);segClearAll();
+    segShow3();delay(500);segClearAll();
+    segShow2();delay(500);segClearAll();
+    segShow3();delay(500);segClearAll();
+    segShow2();delay(500);segClearAll();
   }
 }
