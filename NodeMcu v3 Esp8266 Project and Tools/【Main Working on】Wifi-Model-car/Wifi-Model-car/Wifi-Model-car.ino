@@ -4,17 +4,23 @@ const char* password = "wirelessV1.0";  //Your Wifi Password
 const int testLEDPin = 13;//D7 pin
 const int MainMotorPin1 = 5;//D1
 const int MainMotorPin2 = 4;//D2
+const int directionControlMotorPin1 = 14;//D5
+const int directionControlMotorPin2 = 12;//D6
 WiFiServer server(80);
 
 void setup() {
-  Serial.begin(115200);
-  delay(10); 
   pinMode(testLEDPin,OUTPUT);
   pinMode(MainMotorPin1,OUTPUT);
   pinMode(MainMotorPin2,OUTPUT);
+  pinMode(directionControlMotorPin1,OUTPUT);
+  pinMode(directionControlMotorPin2,OUTPUT);
   digitalWrite(testLEDPin,LOW); 
   digitalWrite(MainMotorPin1,LOW);
   digitalWrite(MainMotorPin2,LOW); 
+  digitalWrite(directionControlMotorPin1,LOW);
+  digitalWrite(directionControlMotorPin2,LOW);
+  Serial.begin(115200);
+  delay(10); 
   Serial.println();
   Serial.println();
   Serial.print("Connecting to ");
@@ -35,7 +41,6 @@ void setup() {
   Serial.println("/"); 
 }
 
-
 void loop() {
   // Check if a client has connected
   WiFiClient client = server.available();
@@ -44,8 +49,14 @@ void loop() {
   }
   // Wait until the client sends some data
   Serial.println("new client");
+  int receiveDataWaitTimes=0;//用來計算等待接收資料的次數
   while(!client.available()){
-    delay(10);//如果Client還來不及做出回應(接資料)，等待他10毫秒
+    delay(30);//如果Client還來不及做出回應(送資料)，等待他30毫秒
+    receiveDataWaitTimes+=1;
+    if(receiveDataWaitTimes>=10){
+      receiveDataWaitTimes=0;
+      break;//因為Client一直都沒做出回應，可能是斷線了，所以就不等了，跳出迴圈!
+    }
   }
   // Read the first line of the request
   String request = client.readStringUntil('\r');//讀取Client的回應直到換行符號出現
@@ -90,8 +101,9 @@ void loop() {
   client.println("<br><br>");
   client.println("<a href=\"/LED=ON\"\"><button>On </button></a>");
   client.println("<a href=\"/LED=OFF\"\"><button>Off </button></a><br />");  
-  client.println("<a href=\"/MotorForward\"\"><button>Forward</button></a><br /><br /><br />");  
-  client.println("<a href=\"/MotorBackward\"\"><button>Backward </button></a><br />");  
+  client.println("<a href=\"/MotorForward\"\"><button style=\"height:200px;width:200px\">Forward</button></a><br /><br /><br />");  
+  client.println("<a href=\"/MotorBackward\"\"><button style=\"height:200px;width:200px\">Backward </button></a><br />");  
+  //上面繫行看起來很怪，但是為了讓IDE把它當成純文字看，只好用一堆\" 這樣IDE才會將它視為"  
   client.println("</html>");
   delay(1);
   Serial.println("Client disonnected");
