@@ -1,3 +1,8 @@
+
+非常詳細的影片教學!!包含了如何透過AppInventor寫程式控制!!!
+
+https://www.youtube.com/watch?v=2AL7HfiRlp4
+
 Esp8266WiFi語法:
 
 優先參考第一筆
