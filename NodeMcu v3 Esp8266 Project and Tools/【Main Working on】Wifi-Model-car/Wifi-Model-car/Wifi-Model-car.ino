@@ -1,6 +1,6 @@
 #include <ESP8266WiFi.h>
 const char* ssid = "Chevrolet_Camaro_Concept_model"; //your WiFi Name
-const char* password = "wirelessV1.0";  //Your Wifi Password
+const char* password = "wirelessControlCar";  //Your Wifi Password
 const int testLEDPin = 13;//D7 pin
 const int MainMotorPin1 = 5;//D1
 const int MainMotorPin2 = 4;//D2
@@ -42,7 +42,16 @@ void setup() {
 }
 
 void loop() {
-  // Check if a client has connected
+  while (WiFi.status() != WL_CONNECTED) {//如果沒連線到
+    digitalWrite(MainMotorPin1, LOW);
+    digitalWrite(MainMotorPin2, LOW);
+    digitalWrite(directionControlMotorPin1,LOW);
+    digitalWrite(directionControlMotorPin2,LOW);
+    delay(500);
+    Serial.print("Lost Connection! Trying to reconnect...");
+  }
+  //這邊以上非常重要!!!防止WIFI斷線，無法控制，而遙控車卻仍一直跑
+  //Below is to Check if a client has connected
   WiFiClient client = server.available();
   if (!client) {
     return;//如果Client還未做出回應(接資料)，就在從頭跑一次LOOP
@@ -72,17 +81,54 @@ void loop() {
     digitalWrite(testLEDPin, LOW);
     value = LOW;
   }
-  if (request.indexOf("/MotorForward") != -1)  {
+  // Set testLEDPin according to the request
+  //digitalWrite(testLEDPin, value);
+  if(request.indexOf("/Stop") != -1)  {
+    digitalWrite(MainMotorPin1, LOW);
+    digitalWrite(MainMotorPin2, LOW);
+    digitalWrite(directionControlMotorPin1,LOW);
+    digitalWrite(directionControlMotorPin2,LOW);
+  }
+  if (request.indexOf("/Forward") != -1)  {
     digitalWrite(MainMotorPin1, LOW);
     digitalWrite(MainMotorPin2, HIGH);
   }
-  if (request.indexOf("/MotorBackward") != -1)  {
+  if (request.indexOf("/Backward") != -1)  {
     digitalWrite(MainMotorPin2, LOW);
     digitalWrite(MainMotorPin1, HIGH);
   }
-// Set testLEDPin according to the request
-//digitalWrite(testLEDPin, value);
-
+  if(request.indexOf("/Left") != -1)  {
+    digitalWrite(directionControlMotorPin1,LOW);
+    digitalWrite(directionControlMotorPin2,HIGH);
+  }
+  if(request.indexOf("/Right") != -1) {
+    digitalWrite(directionControlMotorPin2,LOW);
+    digitalWrite(directionControlMotorPin1,HIGH);
+  }
+  if(request.indexOf("/LeftForward") != -1) {
+    digitalWrite(directionControlMotorPin1,LOW);
+    digitalWrite(directionControlMotorPin2,HIGH);
+    digitalWrite(MainMotorPin1, LOW);
+    digitalWrite(MainMotorPin2, HIGH);
+  }
+  if(request.indexOf("/RightForward") != -1) {
+    digitalWrite(directionControlMotorPin2,LOW);
+    digitalWrite(directionControlMotorPin1,HIGH);
+    digitalWrite(MainMotorPin1, LOW);
+    digitalWrite(MainMotorPin2, HIGH);
+  }
+  if(request.indexOf("/LeftBackward") != -1) {
+    digitalWrite(directionControlMotorPin1,LOW);
+    digitalWrite(directionControlMotorPin2,HIGH);
+    digitalWrite(MainMotorPin2, LOW);
+    digitalWrite(MainMotorPin1, HIGH);
+  }
+  if(request.indexOf("/RightBackward") != -1) {
+    digitalWrite(directionControlMotorPin2,LOW);
+    digitalWrite(directionControlMotorPin1,HIGH);
+    digitalWrite(MainMotorPin2, LOW);
+    digitalWrite(MainMotorPin1, HIGH);
+  }
   //以下對客戶端(Client，像是手機)丟HTML語法，
   // Return the response
   client.println("HTTP/1.1 200 OK");
