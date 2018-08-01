@@ -26,10 +26,9 @@
 //但是都打上了，後面可以隨意編寫D調的各種歌，我這裡用NOTE_D+數位表示音符，
 //NOTE_DH+數位表示上面有點的那種音符，NOTE_DL+數位表示下面有點的那種音符。
 //這樣後面寫起來比較好識別。
-#define WHOLE 1         //全拍
-#define HALF 0.5        //半拍
-#define QUARTER 0.25    //四分之一拍
-#define EIGHTH 0.25     //八分之一拍
-#define SIXTEENTH 0.625 //十六分之一拍
+#define WHOLE 1
+#define HALF 0.5
+#define QUARTER 0.25
+#define EIGHTH 0.25
+#define SIXTEENTH 0.625
 //這部分是用英文對應了拍子，這樣後面也比較好看
-//其實直接打數字會比較方便
