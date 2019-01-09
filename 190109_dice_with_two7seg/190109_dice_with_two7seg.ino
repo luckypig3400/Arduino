@@ -1,6 +1,7 @@
 //you must define a com pin first!!
 int com1 = 6;
 int com2 = A1;
+int randNumber;
 void setup() {
   //Serial.begin(9600);//debug
   delay(1000);
@@ -15,34 +16,30 @@ void setup() {
 }
 
 void loop() {
-  segClearAll();
-  seg1Show0();
+  randNumber = random(1, 7);//取亂數(最小值, 最大值+1)
+  switch(randNumber){
+    case 1:
+      seg1Show1();
+      break;
+    case 2:
+      seg1Show2();
+      break;
+    case 3:
+      seg1Show3();
+      break;
+    case 4:
+      seg1Show4();
+      break;
+    case 5:
+      seg1Show5();
+      break;
+    case 6:
+      seg1Show6();
+      break;
+    default:
+      segClearAll();
+      break;
+  }
   delay(1000);
   segClearAll();
-  seg1Show1();
-  delay(1000);
-  segClearAll();
-  seg1Show2();
-  delay(1000);
-  segClearAll();
-  seg1Show3();
-  delay(1000);
-  segClearAll();
-  seg1Show4();
-  delay(1000);
-  segClearAll();
-  seg1Show5();
-  delay(1000);
-  segClearAll();
-  seg1Show6();
-  delay(1000);
-  segClearAll();
-  seg1Show7();
-  delay(1000);
-  segClearAll();
-  seg1Show8();
-  delay(1000);
-  segClearAll();
-  seg1Show9();
-  delay(1000);
 }
