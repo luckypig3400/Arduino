@@ -66,7 +66,7 @@ float duration[]=
 
 int length;//这里定义一个变量，后面用来表示共有多少个音符
 
-int tonePin=5;//蜂鸣器的pin 
+int tonePin=11;//蜂鸣器的pin 
 
 
 void setup() 
@@ -93,4 +93,3 @@ noTone(tonePin);//停止当前音符，进入下一音符
   } 
   delay(5000);//等待5秒后，循环重新开始
 }
-
