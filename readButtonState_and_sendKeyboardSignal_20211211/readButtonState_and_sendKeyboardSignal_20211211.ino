@@ -1,44 +1,45 @@
 /* REF:
-+ https://forum.arduino.cc/t/using-analog-pins-for-push-buttons/309407
-+ https://www.arduino.cc/reference/en/language/functions/usb/keyboard/keyboardwrite/
+  + https://forum.arduino.cc/t/using-analog-pins-for-push-buttons/309407
+  + https://www.arduino.cc/reference/en/language/functions/usb/keyboard/keyboardwrite/
 
 */
 // constants won't change. They're used here to set pin numbers:
-const int buttonPin1 = A1;
-const int buttonPin2 = A2;
-const int buttonPin3 = A3; // the number of the pushbutton pin
-const int buttonPin4 = A4;
-const int buttonPin5 = A5;
+const int buttonPin[6] = {696969, A1, A2, A3, A4, A5};
+// the number of the pushbutton pin
+
 const int ledPin =  LED_BUILTIN; // the number of the LED pin
 
-// variables will change:
-int buttonState3 = 0; // variable for reading the pushbutton status
+int buttonState[6] = {0, 0, 0, 0, 0, 0};
+// variable for reading the pushbutton status
 
 void setup() {
   // initialize the LED pin as an output:
-  pinMode(ledPin, OUTPUT);      
-  // initialize the pushbutton pin as an input:
-  pinMode(buttonPin1, INPUT);
-  pinMode(buttonPin2, INPUT);
-  pinMode(buttonPin3, INPUT);
-  pinMode(buttonPin4, INPUT);
-  pinMode(buttonPin5, INPUT);
+  pinMode(ledPin, OUTPUT);
+  for (int i = 1; i < 6; i++) {
+    // initialize the pushbutton pin as an input:
+    pinMode(buttonPin[i], INPUT);
+  }
   Serial.begin(9600);
 }
 
-void loop(){
-  // read the state of the pushbutton value:
-  buttonState3 = digitalRead(buttonPin3);
-  Serial.println(buttonState3);
-  
+void loop() {
+  String allBtnState;
+  for (int i = 1; i < 6; i++) {
+    // read the state of the pushbutton value:
+    buttonState[i] = digitalRead(buttonPin[i]);
+    allBtnState = String(allBtnState + "Btn" + i + ":" + buttonState[i] + "\t");
+    // https://www.arduino.cc/reference/en/language/variables/data-types/stringobject/
+  }
+  Serial.println(allBtnState);
+
   // check if the pushbutton is pressed.
   // if it is, the buttonState is HIGH:
-  if (buttonState3 == LOW) {
-    // turn LED on:    
-    digitalWrite(ledPin, HIGH); 
-  } 
+  if (buttonState[3] == LOW) {
+    // turn LED on:
+    digitalWrite(ledPin, HIGH);
+  }
   else {
     // turn LED off:
-    digitalWrite(ledPin, LOW); 
+    digitalWrite(ledPin, LOW);
   }
 }
