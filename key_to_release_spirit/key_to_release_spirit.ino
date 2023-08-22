@@ -33,6 +33,9 @@ int MQ7_A0_PIN = A0;
 int MQ7_D0_PIN = A1;
 // *******硬體腳位宣告區結尾*******
 
+double MQ9_R0 = 28.56;
+double MQ7_R0 = 5.27;
+
 void setup(void) {
   u8g2.begin();
   Serial.begin(9600);
