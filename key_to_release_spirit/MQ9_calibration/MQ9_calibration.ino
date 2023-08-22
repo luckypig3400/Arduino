@@ -49,7 +49,8 @@ void setup() {
   //Init serial port
   Serial.begin(115200);
   MQ9.setRegressionMethod(1); //_PPM =  a*ratio^b
-  MQ9.setA(574.25); MQ9.setB(-2.222); // Configure the equation to to calculate LPG concentration
+  MQ9.setA(599.65); MQ9.setB(-2.244); // Configure the equation to to calculate CO concentration
+  // https://github.com/miguel5612/MQSensorsLib/blob/master/examples/MQ-9/MQ-9.ino
   /* 
     //If the RL value is different from 10K please assign your RL value with the following method:
     MQ3.setRL(10);
