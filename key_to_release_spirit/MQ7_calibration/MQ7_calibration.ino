@@ -19,7 +19,7 @@
 #include <MQUnifiedsensor.h>
 /************************Hardware Related Macros************************************/
 #define         Board                   ("Arduino MEGA")
-#define         Pin                     (A14)  //Analog input 2 of your arduino
+#define         Pin                     (A0)  //Analog input 2 of your arduino
 /***********************Software Related Macros************************************/
 #define         Type                    ("MQ-7") //MQ7
 #define         Voltage_Resolution      (5)
@@ -49,7 +49,8 @@ void setup() {
   //Init serial port
   Serial.begin(115200);
   MQ7.setRegressionMethod(1); //_PPM =  a*ratio^b
-  MQ7.setA(574.25); MQ7.setB(-2.222); // Configure the equation to to calculate LPG concentration
+  MQ7.setA(99.042); MQ7.setB(-1.518); // Configure the equation to to calculate CO concentration
+  // https://github.com/miguel5612/MQSensorsLib/blob/master/examples/MQ-7/MQ-7.ino
   /* 
     //If the RL value is different from 10K please assign your RL value with the following method:
     MQ3.setRL(10);
