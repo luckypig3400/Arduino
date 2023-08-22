@@ -1,5 +1,6 @@
 // OLED參考: https://blog.jmaker.com.tw/u8g2-oled/
-// MQ9參考: https://www.instructables.com/How-to-Calibrate-Use-MQ9-Gas-Sensor-W-Arduino/
+// MQ系列感測器參考1: https://github.com/miguel5612/MQSensorsLib#getting-started
+// MQ系列感測器參考2: https://sites.google.com/mail3.hwsh.tc.edu.tw/earth/arduinoadvanced/co-sensor-mq-7
 
 #include <Arduino.h>
 #include <U8g2lib.h>
