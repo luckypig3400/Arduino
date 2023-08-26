@@ -15,10 +15,10 @@ void setup() {
 } 
   
 void loop() { 
-  float sensor_volt;  
-  float RS_air; //  Rs in clean air 
-  float R0;  // R0 in 1000 ppm LPG 
-  float sensorValue; 
+  float sensor_volt = 0;
+  float RS_air = 0;  //  Rs in clean air
+  float R0 = 0;      // R0 in 1000 ppm LPG
+  float sensorValue = 0;
  
 //Average   
     for(int x = 0 ; x < 100 ; x++) 

@@ -42,10 +42,10 @@ void setup(void) {
 void loop(void) {
   String MQ9Voutput = "MQ9 Volt= ";
   String MQ9R0output = "MQ9 R0= ";
-  float sensor_volt;
-  float RS_air;  //  Rs in clean air
-  float R0;      // R0 in 1000 ppm LPG
-  float sensorValue;
+  float sensor_volt = 0;
+  float RS_air = 0;  //  Rs in clean air
+  float R0 = 0;      // R0 in 1000 ppm LPG
+  float sensorValue = 0;
 
   //Average
   for (int x = 0; x < 100; x++) {
@@ -57,8 +57,8 @@ void loop(void) {
   sensor_volt = (sensorValue / 1024) * 5.0;
   RS_air = (5.0 - sensor_volt) / sensor_volt;  // Depend on RL on yor module
   R0 = RS_air / 9.9;                           // According to MQ9 datasheet table
-  
-  MQ9Voutput += String(sensor_volt) += "mV";
+
+  MQ9Voutput += String(sensor_volt) += "V";
   MQ9R0output += String(R0);
 
   u8g2.setFont(u8g2_font_profont15_tr);  //設定字型
@@ -67,7 +67,7 @@ void loop(void) {
   do {
     u8g2.drawStr(0, 13, MQ9Voutput.c_str());  //輸出文字
     // https://forum.arduino.cc/t/how-to-display-a-string-variable-with-the-u8g2-library/622278/2
-    u8g2.drawStr(0, 26, MQ9R0output.c_str());      //輸出文字
+    u8g2.drawStr(0, 26, MQ9R0output.c_str());  //輸出文字
     // u8g2.drawXBMP(0,16, imgWidth, imgHeight, logo_bmp);  //繪圖
   } while (u8g2.nextPage());
   // delay(100);
