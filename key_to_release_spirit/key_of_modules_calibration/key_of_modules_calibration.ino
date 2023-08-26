@@ -42,24 +42,24 @@ void setup(void) {
 void loop(void) {
   String MQ9Voutput = "MQ9 Volt= ";
   String MQ9R0output = "MQ9 R0= ";
-  float sensor_volt = 0;
-  float RS_air = 0;  //  Rs in clean air
-  float R0 = 0;      // R0 in 1000 ppm LPG
-  float sensorValue = 0;
+  float MQ9sensor_volt = 0;
+  float MQ9_RS_air = 0;  //  Rs in clean air
+  float MQ9_R0 = 0;      // R0 in 1000 ppm LPG
+  float MQ9sensorValue = 0;
 
   //Average
   for (int x = 0; x < 100; x++) {
-    sensorValue = sensorValue + analogRead(MQ9_A0_PIN);
+    MQ9sensorValue = MQ9sensorValue + analogRead(MQ9_A0_PIN);
   }
-  sensorValue = sensorValue / 100.0;
+  MQ9sensorValue = MQ9sensorValue / 100.0;
   //-----------------------------------------------/
 
-  sensor_volt = (sensorValue / 1024) * 5.0;
-  RS_air = (5.0 - sensor_volt) / sensor_volt;  // Depend on RL on yor module
-  R0 = RS_air / 9.9;                           // According to MQ9 datasheet table
+  MQ9sensor_volt = (MQ9sensorValue / 1024) * 5.0;
+  MQ9_RS_air = (5.0 - MQ9sensor_volt) / MQ9sensor_volt;  // Depend on RL on yor module
+  MQ9_R0 = MQ9_RS_air / 9.9;                           // According to MQ9 datasheet table
 
-  MQ9Voutput += String(sensor_volt) += "V";
-  MQ9R0output += String(R0);
+  MQ9Voutput += String(MQ9sensor_volt) += "V";
+  MQ9R0output += String(MQ9_R0);
 
   u8g2.setFont(u8g2_font_profont15_tr);  //設定字型
   // 可用字型參考: https://github.com/olikraus/u8g2/wiki/fntlistall
