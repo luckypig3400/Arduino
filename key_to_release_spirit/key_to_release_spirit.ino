@@ -21,14 +21,13 @@ U8G2_SH1106_128X64_NONAME_1_HW_I2C u8g2(U8G2_R0, /* reset=*/U8X8_PIN_NONE);  //A
 // *******OLED參數宣告區結尾*******
 
 // *******硬體腳位宣告區起點*******
-int OLED_VCC_PIN = 22;
-int OLED_GND_PIN = 23;
-int MQ9_VCC_PIN = A13;
-int MQ9_GND_PIN = A12;
+// OLED的VCC接Arduino的3.3V pin
+// MQ系列模組的VCC都接Arduino的5V pin
+// 所有模組的GND都接在Arduino的GND，而不使用digtialWrite(pinNum, LOW);的方式來作為GND
+
 int MQ9_A0_PIN = A14;
 int MQ9_D0_PIN = A15;
-int MQ7_VCC_PIN = A2;
-int MQ7_GND_PIN = A3;
+
 int MQ7_A0_PIN = A0;
 int MQ7_D0_PIN = A1;
 // *******硬體腳位宣告區結尾*******
@@ -39,21 +38,6 @@ double MQ7_R0 = 5.27;
 void setup(void) {
   u8g2.begin();
   Serial.begin(9600);
-
-  pinMode(OLED_VCC_PIN, OUTPUT);
-  digitalWrite(OLED_VCC_PIN, HIGH);
-  pinMode(OLED_GND_PIN, OUTPUT);
-  digitalWrite(OLED_GND_PIN, LOW);
-
-  pinMode(MQ9_VCC_PIN, OUTPUT);
-  digitalWrite(MQ9_VCC_PIN, HIGH);
-  pinMode(MQ9_GND_PIN, OUTPUT);
-  digitalWrite(MQ9_GND_PIN, LOW);
-
-  pinMode(MQ7_VCC_PIN, OUTPUT);
-  digitalWrite(MQ7_VCC_PIN, HIGH);
-  pinMode(MQ7_GND_PIN, OUTPUT);
-  digitalWrite(MQ7_GND_PIN, LOW);
 }
 
 void loop(void) {
