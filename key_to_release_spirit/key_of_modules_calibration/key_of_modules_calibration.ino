@@ -4,6 +4,7 @@
 
 #include <Arduino.h>
 #include <U8g2lib.h>
+#include "MQ7.h"
 
 // *******OLED參數宣告區起點*******
 #ifdef U8X8_HAVE_HW_SPI
@@ -30,6 +31,8 @@ int MQ9_D0_PIN = A15;
 
 int MQ7_A0_PIN = A0;
 int MQ7_D0_PIN = A1;
+// init MQ7 device
+MQ7 mq7(MQ7_A0_PIN, 5);
 // *******硬體腳位宣告區結尾*******
 
 double MQ9_R0 = 28.56;  //可能沒用
@@ -37,11 +40,19 @@ double MQ7_R0 = 5.27;   //可能沒用
 
 void setup(void) {
   u8g2.begin();
+  u8g2.setFont(u8g2_font_profont15_tr);  //設定字型
+  // 可用字型參考: https://github.com/olikraus/u8g2/wiki/fntlistall
+  u8g2.drawStr(0, 13, "Calibrating MQ7...");
+  mq7.calibrate();		// calculates R0
+  u8g2.drawStr(0, 26, "Calibrating done! MQ9 R0=");
+  u8g2.drawStr(0, 39, String(mq7.getR0()).c_str());
+  delay(1000);
 }
 
 void loop(void) {
   String MQ9Voutput = "MQ9 Volt= ";
   String MQ9R0output = "MQ9 R0= ";
+  String MQ7ppmOutput = "MQ7 ppm= ";
   float MQ9sensor_volt = 0;
   float MQ9_RS_air = 0;  //  Rs in clean air
   float MQ9_R0 = 0;      // R0 in 1000 ppm LPG
@@ -61,13 +72,14 @@ void loop(void) {
   MQ9Voutput += String(MQ9sensor_volt) += "V";
   MQ9R0output += String(MQ9_R0);
 
-  u8g2.setFont(u8g2_font_profont15_tr);  //設定字型
-  // 可用字型參考: https://github.com/olikraus/u8g2/wiki/fntlistall
+  MQ7ppmOutput += String(mq7.readPpm());
+
   u8g2.firstPage();
   do {
     u8g2.drawStr(0, 13, MQ9Voutput.c_str());  //輸出文字
     // https://forum.arduino.cc/t/how-to-display-a-string-variable-with-the-u8g2-library/622278/2
     u8g2.drawStr(0, 26, MQ9R0output.c_str());  //輸出文字
+    u8g2.drawStr(0, 39, MQ7ppmOutput.c_str());
     // u8g2.drawXBMP(0,16, imgWidth, imgHeight, logo_bmp);  //繪圖
   } while (u8g2.nextPage());
   // delay(100);
