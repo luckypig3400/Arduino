@@ -37,9 +37,10 @@ int MQ7_D0_PIN = A1;
 #define RatioMQ9CleanAir 9.6   //RS / R0 = 9.6 ppm
 
 MQUnifiedsensor MQ9("Arduino MEGA", 5, 10, MQ9_A0_PIN, "MQ-9");
+MQUnifiedsensor MQ7("Arduino MEGA", 5, 10, MQ9_A0_PIN, "MQ-7");
 
-double MQ9_R0 = 28.56;  //可能沒用
-double MQ7_R0 = 5.27;   //可能沒用
+double MQ9_R0 = 0;  //放置數小時後將校準值紀錄於此
+double MQ7_R0 = 0;  //放置數小時後將校準值紀錄於此
 
 void setup(void) {
   Serial.begin(115200);
@@ -49,10 +50,17 @@ void setup(void) {
   MQ9.setB(-2.244);  // Configure the equation to to calculate CO concentration
   // https://github.com/miguel5612/MQSensorsLib/blob/master/examples/MQ-9/MQ-9.ino
 
+  MQ7.setRegressionMethod(1);  //_PPM =  a*ratio^b
+  MQ7.setA(99.042);
+  MQ7.setB(-1.518);  // Configure the equation to to calculate CO concentration
+  // https://github.com/miguel5612/MQSensorsLib/blob/master/examples/MQ-7/MQ-7.ino
+
   //init the sensor
   MQ9.init();
+  MQ7.init();
+
   //Print in serial monitor
-  Serial.println("MQ9 - Calibracion");
+  Serial.println("MQ9 & MQ7 - Calibracion");
   Serial.println("Note - Make sure you are in a clean room and the sensor has pre-heated almost 4 hours");
   Serial.println("Autonumeric | lecture (R0)");
 
@@ -63,16 +71,21 @@ void setup(void) {
 
 void loop(void) {
   MQ9.update();
+  MQ7.update();
   //Read the sensor and print in serial port
-  float lecture = MQ9.calibrate(RatioMQ9CleanAir);
+  float MQ9_lecture = MQ9.calibrate(RatioMQ9CleanAir);
+  float MQ7_lecture = MQ7.calibrate(RatioMQ7CleanAir);
 
-  String MQ9_R0_output = "MQ9 R0= " + String(lecture);
+  String MQ9_R0_output = "MQ9 R0= " + String(MQ9_lecture);
+  String MQ7_R0_output = "MQ7 R0= " + String(MQ7_lecture);
+
+  Serial.println(String(MQ9_lecture) + " | " + String(MQ7_lecture));
 
   u8g2.firstPage();
   do {
     u8g2.drawStr(0, 13, MQ9_R0_output.c_str());  //輸出文字
     // https://forum.arduino.cc/t/how-to-display-a-string-variable-with-the-u8g2-library/622278/2
-    // u8g2.drawStr(0, 26, "MQ9_cali_String".c_str());
+    u8g2.drawStr(0, 26, MQ7_R0_output.c_str());
     // u8g2.drawStr(0, 39, "MQ7_String".c_str());
     // u8g2.drawXBMP(0,16, imgWidth, imgHeight, logo_bmp);  //繪圖
   } while (u8g2.nextPage());
