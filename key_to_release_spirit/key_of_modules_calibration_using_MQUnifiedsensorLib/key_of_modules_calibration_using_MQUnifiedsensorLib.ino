@@ -39,8 +39,8 @@ int MQ7_D0_PIN = A1;
 MQUnifiedsensor MQ9("Arduino MEGA", 5, 10, MQ9_A0_PIN, "MQ-9");
 MQUnifiedsensor MQ7("Arduino MEGA", 5, 10, MQ9_A0_PIN, "MQ-7");
 
-double MQ9_R0 = 38.67;  //放置數小時後將校準值紀錄於此
-double MQ7_R0 = 13.52;  //放置數小時後將校準值紀錄於此
+double MQ9_R0 = 34.48;  //放置數小時後將校準值紀錄於此
+double MQ7_R0 = 11.83;  //放置數小時後將校準值紀錄於此
 
 void setup(void) {
   Serial.begin(115200);
