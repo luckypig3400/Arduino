@@ -33,9 +33,6 @@ int MQ7_A0_PIN = A0;
 int MQ7_D0_PIN = A1;
 // *******硬體腳位宣告區結尾*******
 
-#define RatioMQ7CleanAir 27.5  //RS / R0 = 27.5 ppm
-#define RatioMQ9CleanAir 9.6   //RS / R0 = 9.6 ppm
-
 MQUnifiedsensor MQ9("Arduino MEGA", 5, 10, MQ9_A0_PIN, "MQ-9");
 MQUnifiedsensor MQ7("Arduino MEGA", 5, 10, MQ9_A0_PIN, "MQ-7");
 
@@ -60,9 +57,10 @@ void setup(void) {
   MQ7.init();
 
   //Print in serial monitor
-  Serial.println("MQ9 & MQ7 - Calibracion");
-  Serial.println("Note - Make sure you are in a clean room and the sensor has pre-heated almost 4 hours");
-  Serial.println("Autonumeric | lecture (R0)");
+  Serial.println("MQ9 & MQ7 Sensors CO Detection");
+  MQ9.setR0(MQ9_R0);
+  MQ7.setR0(MQ7_R0);
+  Serial.println("Using previous recorded R0");
 
   u8g2.begin();
   u8g2.setFont(u8g2_font_profont15_tr);  //設定字型
@@ -73,19 +71,19 @@ void loop(void) {
   MQ9.update();
   MQ7.update();
   //Read the sensor and print in serial port
-  float MQ9_lecture = MQ9.calibrate(RatioMQ9CleanAir);
-  float MQ7_lecture = MQ7.calibrate(RatioMQ7CleanAir);
+  float MQ9_value = MQ9.readSensor();
+  float MQ7_value = MQ7.readSensor();
 
-  String MQ9_R0_output = "MQ9 R0= " + String(MQ9_lecture);
-  String MQ7_R0_output = "MQ7 R0= " + String(MQ7_lecture);
+  String MQ9_CO_output = "MQ9 read " + String(MQ9_value) + "PPM";
+  String MQ7_CO_output = "MQ7 read " + String(MQ7_value) + "PPM";
 
-  Serial.println(String(MQ9_lecture) + " | " + String(MQ7_lecture));
+  Serial.println(String(MQ9_value) + " | " + String(MQ7_value));
 
   u8g2.firstPage();
   do {
-    u8g2.drawStr(0, 13, MQ9_R0_output.c_str());  //輸出文字
+    u8g2.drawStr(0, 13, MQ9_CO_output.c_str());  //輸出文字
     // https://forum.arduino.cc/t/how-to-display-a-string-variable-with-the-u8g2-library/622278/2
-    u8g2.drawStr(0, 26, MQ7_R0_output.c_str());
+    u8g2.drawStr(0, 26, MQ7_CO_output.c_str());
     // u8g2.drawStr(0, 39, "MQ7_String".c_str());
     // u8g2.drawXBMP(0,16, imgWidth, imgHeight, logo_bmp);  //繪圖
   } while (u8g2.nextPage());
