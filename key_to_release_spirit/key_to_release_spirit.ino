@@ -62,6 +62,9 @@ void setup(void) {
   MQ7.setR0(MQ7_R0);
   Serial.println("Using previous recorded R0");
 
+  MQ9.serialDebug(true);
+  MQ7.serialDebug(true);
+
   u8g2.begin();
   u8g2.setFont(u8g2_font_profont15_tr);  //設定字型
   // 可用字型參考: https://github.com/olikraus/u8g2/wiki/fntlistall
@@ -77,7 +80,9 @@ void loop(void) {
   String MQ9_CO_output = "MQ9 read " + String(MQ9_value) + "PPM";
   String MQ7_CO_output = "MQ7 read " + String(MQ7_value) + "PPM";
 
-  Serial.println(String(MQ9_value) + " | " + String(MQ7_value));
+  // Serial.println(String(MQ9_value) + " | " + String(MQ7_value));
+  MQ9.serialDebug(); // Will print the table on the serial port
+  MQ7.serialDebug(); // Will print the table on the serial port
 
   u8g2.firstPage();
   do {
