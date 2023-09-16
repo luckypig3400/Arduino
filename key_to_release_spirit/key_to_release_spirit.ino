@@ -37,7 +37,7 @@ MQUnifiedsensor MQ9("Arduino MEGA", 5, 10, MQ9_A0_PIN, "MQ-9");
 MQUnifiedsensor MQ7("Arduino MEGA", 5, 10, MQ9_A0_PIN, "MQ-7");
 
 double MQ9_R0 = 25.60;  //放置數小時後將校準值紀錄於此
-double MQ7_R0 = 8.82;  //放置數小時後將校準值紀錄於此
+double MQ7_R0 = 8.82;   //放置數小時後將校準值紀錄於此
 
 void setup(void) {
   Serial.begin(115200);
@@ -71,18 +71,26 @@ void setup(void) {
 }
 
 void loop(void) {
-  MQ9.update();
-  MQ7.update();
-  //Read the sensor and print in serial port
-  float MQ9_value = MQ9.readSensor();
-  float MQ7_value = MQ7.readSensor();
+  float MQ9_value = 0;
+  float MQ7_value = 0;
+
+  for (int i = 0; i < 10; i++) {
+    MQ9.update();
+    MQ7.update();
+    //Read the sensor and print in serial port
+    MQ9_value += MQ9.readSensor();
+    MQ7_value += MQ7.readSensor();
+  }
+  // 連續讀取10次取平均值
+  MQ9_value = MQ9_value/10;
+  MQ7_value = MQ7_value/10;
 
   String MQ9_CO_output = "MQ9 read " + String(MQ9_value) + "PPM";
   String MQ7_CO_output = "MQ7 read " + String(MQ7_value) + "PPM";
 
   // Serial.println(String(MQ9_value) + " | " + String(MQ7_value));
-  MQ9.serialDebug(); // Will print the table on the serial port
-  MQ7.serialDebug(); // Will print the table on the serial port
+  MQ9.serialDebug();  // Will print the table on the serial port
+  MQ7.serialDebug();  // Will print the table on the serial port
 
   u8g2.firstPage();
   do {
@@ -93,5 +101,5 @@ void loop(void) {
     // u8g2.drawXBMP(0,16, imgWidth, imgHeight, logo_bmp);  //繪圖
   } while (u8g2.nextPage());
 
-  delay(100);
+  delay(1000);
 }
